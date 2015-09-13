@@ -2,13 +2,13 @@
 <html>
 <head lang="en">
     <meta charset="UTF-8">
-    <title>Music Roulette</title>
+    <title>Sail</title>
     <link rel = "stylesheet" href = "css/style.css">
 
 </head>
 <body>
 
-    <h1 class = "main_text" id = "header">Music Roulette</h1>
+    <h1 class = "main_text" id = "header">Sail</h1>
 
     <p class = "main_text" id = "intro_text">Choose a genre you want to explore and checkout a random track you might like.</p>
 
@@ -46,7 +46,7 @@
                 </thead>
 
                 <tbody data-bind = "foreach: resultsArray" id = "table_body">
-                    <tr class = "results_row" data-bind="event: {mouseover: $root.hoverRow, mouseout: $root.leaveRow, click: $root.selectRow, dblclick: $root.getSound}">
+                    <tr class = "results_row" data-bind="event: {mouseover: $root.hoverRow, mouseout: $root.leaveRow, click: $root.selectRow, dblclick: $root.handleClick}">
                         <td data-bind = "text: genre"></td>
                         <td data-bind = "text: title"></td>
                         <td><a href="#" data-bind="click: $root.removeTrack">Remove</a></td>
@@ -66,6 +66,27 @@
         <div class="col-md-2 col-md-offset-5">
             <button id = "AddTrackButton" data-bind = "click: addTrack,  enable: resultsArray().length < 5">Add a Track!</button>
             <h5>Total tracks: (<span data-bind = "text: resultsArray().length"></span>)</h5>
+        </div>
+    </div>
+
+    <div class = "row">
+
+        <div id = "dashboard" class = "col-md-12">
+            <div class = "col-md-2"></div>
+
+            <div class = "col-md-4">
+                <h1>Artwork Area</h1>
+                <img id = "artwork_img" src = "">
+            </div>
+            <div class = "col-md-6">
+                <h1><span id = "track-title"></span></h1>
+                <p>This track has <span id = "track-likes"></span> likes.</p>
+                <p>And <span id = "track-comments"></span> comments</p>
+                <p>As well as <span id = "track-shares"></span> shares</p>
+                <p>Like it? Check it out on <a id = "track-link" href = "">SoundCloud</a></p>
+            </div>
+
+            <div class = "col-md-2"></div>
         </div>
     </div>
 
@@ -127,6 +148,32 @@
         <!--</circle>-->
     <!--</svg>-->
 
+    <!--<div class = "row">-->
+        <!--<div class = "col-md-12">-->
+            <!--<table class="table table-striped table-hover " id = "TracksTable">-->
+                <!--<thead id = "table_head">-->
+                <!--<tr>-->
+                    <!--<th class = "table_sub_header">Genre</th>-->
+                    <!--<th class = "table_sub_header">Title</th>-->
+                    <!--&lt;!&ndash;<th>Column heading</th>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<th>Column heading</th>&ndash;&gt;-->
+                <!--</tr>-->
+                <!--</thead>-->
+                <!--<tbody data-bind = "foreach: resultsArray" id = "table_body">-->
+
+
+                <!--<tr class = "results_row" data-bind="event: {mouseover: $root.hoverRow, mouseout: $root.leaveRow, click: $root.selectRow, dblclick: $root.getSound}">-->
+                    <!--<td data-bind = "text: genre"></td>-->
+                    <!--<td data-bind = "text: title"></td>-->
+                    <!--<td><a href="#" data-bind="click: $root.removeTrack">Remove</a></td>-->
+                <!--</tr>-->
+
+                <!--</tbody>-->
+            <!--</table>-->
+        <!--</div>-->
+    <!--</div>-->
+
+
     <!---Import Bootstrap---->
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet" integrity="sha256-MfvZlkHCEqatNoGiOXveE8FIwMzZg4W85qfrfIFBfYc= sha512-dTfge/zgoMYpP7QbHy4gWMEGsbsdZeCXz7irItjcC3sPUFtf0kuFbDz/ixG7ArTxmDjLXDmezHubeNikyKGVyQ==" crossorigin="anonymous">    <!--Import Knockout-->
     <!----Import Knockout ---->
@@ -137,7 +184,7 @@
     <!---jQuery (local)--->
     <script src = "js/jquery-ui/jquery.js"></script>
     <!--roulette scrip (local)--->
-    <script src = "js/MusicRoulette.js"></script>
+    <script src = "js/Sail.js"></script>
 
 </body>
 </html>

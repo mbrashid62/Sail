@@ -12,6 +12,8 @@ $(function(){
     var sound_being_played;
     var is_track_playing = false;
 
+    var sc_track;
+
     /*****Get permission to use SoundCloud API*********/
     window.onload = function(){
         SC.initialize({
@@ -25,6 +27,8 @@ $(function(){
     });
 
     var getTrackInfo = function(track){
+
+        sc_track = track;
         return {
             "genre": track.genre,
             "title": track.title,
@@ -90,7 +94,13 @@ $(function(){
             viewModel.resultsArray.remove(track);
         },
 
+        viewModel.handleClick = function(track){
+            viewModel.getSound(track);
+            viewModel.toggleDash();
+        },
+
         viewModel.getSound = function(track){
+            debugger;
 
             var track_path = '/tracks/' + track.id;
             var handleStreaming = function(viewModel){
@@ -121,18 +131,37 @@ $(function(){
         viewModel.togglePause = function (sound) {
             console.log('In togglePause');
             sound.togglePause();
-        },
+            //viewModel.displayDash(sc_track);
+        }
 
         viewModel.hoverRow = function(data, event){
             var el = $(event.target.parentElement);
-            el.css("backgroundColor", "black");
+            el.css("backgroundColor", "gray");
+            el.css("color", "white");
+            el.css("cursor","pointer");
 
         },
 
         viewModel.leaveRow = function(data, event){
             var el = $(event.target.parentElement);
             el.css("backgroundColor", "");
-        }
+        },
+
+        viewModel.toggleDash = function(){
+
+            //use sc track which is outer scope variable
+            debugger;
+
+            var art_img = $('#artwork_img');
+            art_img.attr("src", sc_track.artwork_url);
+
+            //rightside data
+            var title = $('#track-title').html(sc_track.title);
+            var likes = $('#track-likes').html(sc_track.likes_count);
+            var comments = $('#track-comments').html(sc_track.comment_count);
+            var link = $('#track-link').attr("href", sc_track.permalink_url);
+
+        };
 
     };
 
