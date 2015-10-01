@@ -14,13 +14,12 @@ body{
 .main_text{
 
     color: white;
-    /*opacity: 0.6;*/
     text-align: center;
     font-family: 'Quicksand', 'sans-serif';
     font-size: 3em;
 }
 #header-text, #intro-text, #body-wrapper {
-    -webkit-animation-duration: 3s;
+    -webkit-animation-duration: 2s;
 }
 
 
@@ -77,7 +76,6 @@ body{
     color: darkslategray;
     opacity: 1.0;
     font-size: 20px;
-
 }
 
 .results_row a{
@@ -114,23 +112,6 @@ button{
 
 }
 
-.results_row button:hover{
-    background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #dfdfdf), color-stop(1, #ededed));
-    background:-moz-linear-gradient(top, #dfdfdf 5%, #ededed 100%);
-    background:-webkit-linear-gradient(top, #dfdfdf 5%, #ededed 100%);
-    background:-o-linear-gradient(top, #dfdfdf 5%, #ededed 100%);
-    background:-ms-linear-gradient(top, #dfdfdf 5%, #ededed 100%);
-    background:linear-gradient(to bottom, #dfdfdf 5%, #ededed 100%);
-    filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#dfdfdf', endColorstr='#ededed',GradientType=0);
-    background-color:#dfdfdf;
-}
-
-.results_row button:active{
-    position:relative;
-    top:1px;
-    outline: 0;
-    border: 1px gray solid;
-}
 
 .results_row{
     opacity: 0.4;
@@ -148,20 +129,6 @@ button{
     margin-top: 25px;
 }
 
-.table-striped>tbody>tr:nth-of-type(odd){
-    background-color: transparent;
-}
-
-svg {
-    display:block;
-    margin-left: auto;
-    margin-right: auto;
-    margin-top: 5vh;
-    margin-bottom: 5vh;
-    width: 40px;
-    height: 40px;
-    cursor: pointer;
-}
 
 #dashboard{
     text-align: center;

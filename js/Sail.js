@@ -12,29 +12,26 @@ $(function(){
     var $introText = $('#intro-text');
     var $bodyWrapper = $('#body-wrapper');
 
+    //hide els for animation
     $introText.css("opacity", "0.0");
     $bodyWrapper.css("opacity", "0.0");
 
 
     var animateHeader = function(){
-        $headerText.addClass('animated bounceInUp');
+        $headerText.addClass('animated zoomIn');
+        $introText.css("opacity", "1.0");
+        $introText.addClass('animated zoomIn');
     };
 
-    var animateSubText = function(){
-        $introText.css("opacity", "1.0");
-        $introText.addClass('animated bounceInUp');
-    };
 
     var animateBody = function () {
         $bodyWrapper.css("opacity", "1.0");
         $bodyWrapper.addClass('animated fadeIn');
     };
 
+    //chain animation functions
     animateHeader();
-
-    $headerText.on('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', animateSubText);
     $introText.on('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', animateBody);
-
 
 
     /*****Get permission to use SoundCloud API*********/
@@ -48,6 +45,7 @@ $(function(){
     var viewModel = function () {
 
         var viewModel = this;
+        //array to store tracks from SC
         this.resultsArray = ko.observableArray([]);
 
         viewModel.isPlaying = false;
@@ -58,27 +56,23 @@ $(function(){
 
         viewModel.showTableAndButton = function(){
 
-            if($genreSelect.val() == 'Custom'){
+            if($genreSelect.val() == 'Custom')
                 $customForm.show();
-            }
-            else{
+            else
                 $customForm.hide();
-            }
         },
 
         viewModel.addTrack = function () {
             var genreSelected = $genreSelect.val();
-            if($genreSelect.val() == 'Choose a Genre'){
+            if($genreSelect.val() == 'Choose a Genre')
                 alert('Pick an actual genre');
-            }
 
-            else if($genreSelect.val() == 'Custom'){
+            else if($genreSelect.val() == 'Custom')
                 viewModel.handle_add_track($customInput.val());
-            }
 
-            else{
+            else
                 viewModel.handle_add_track(genreSelected);
-            }
+
         },
 
         viewModel.handle_add_track = function(genreSelected){
@@ -89,7 +83,7 @@ $(function(){
                 var this_track = null;
                 var has_received_track = false;
 
-                // perform an async request and then resolve/reject.
+                // perform an async request and then resolve/reject the promise.
                 SC.get('/tracks', {genres: genreSelected, streamable: true},
 
                     //Get tracks arr from SC and then get a random track from arr
@@ -111,7 +105,6 @@ $(function(){
 
         viewModel.addToResultsArray = function(this_track){
             viewModel.resultsArray.push(this_track);
-            //viewModel.resultsArray.push(new TrackResult(this_track.genre, this_track.title, this_track.duration, this_track.download_count, this_track.playback_count, this_track.favoritings_count, this_track.purchase_url, this_track.id));
         };
 
         viewModel.removeTrack = function (track){
@@ -120,9 +113,7 @@ $(function(){
 
         viewModel.handleClick = function(trackClicked){
 
-            var index_clicked_track = viewModel.resultsArray.indexOf(trackClicked);
-            viewModel.track_for_dash  = viewModel.resultsArray()[index_clicked_track];
-
+            viewModel.track_for_dash  = trackClicked;
 
             //if a track is playing and the user clicked that track- pause it
             if(viewModel.isPlaying && (trackClicked == viewModel.trackPlaying)){
@@ -176,22 +167,6 @@ $(function(){
 
         },
 
-        viewModel.hoverRow = function(data, event){
-            var el = $(event.target.parentElement);
-            //el.css("backgroundColor", "gray");
-            //el.css("opacity", "1.0");
-            ////el.css("color", "white");
-            //el.css("cursor","pointer");
-            //el.css("color", "black");
-
-        },
-
-        viewModel.leaveRow = function(data, event){
-            var el = $(event.target.parentElement);
-            //el.css("opacity", "0.4");
-            //el.css("color", "darkslategray");
-        },
-
         viewModel.displayDash = function(){
 
             $dashboard.show();
@@ -209,6 +184,17 @@ $(function(){
             var link = $('#track-link').attr("href", viewModel.track_for_dash.permalink_url);
 
         };
+
+        //TODO fix
+        //viewModel.hoverRow = function(data, event){
+        //    var el = $(event.target.parentElement);
+        //    el.addClass('animated infinite pulse');
+        //},
+        //
+        //viewModel.leaveRow= function(data, event){
+        //    var el = $(event.target.parentElement);
+        //    el.removeClass('animated infinite pulse');
+        //};
 
     };
 

@@ -46,7 +46,7 @@
                     </thead>
 
                     <tbody data-bind = "foreach: resultsArray" id = "table_body">
-                    <tr class = "results_row" data-bind="event: {mouseover: $root.hoverRow, mouseout: $root.leaveRow, click: $root.selectRow, dblclick: $root.handleClick}">
+                    <tr class = "results_row" data-bind="event: {mouseover: $root.hoverRow, mouseout: $root.leaveRow, dblclick: $root.handleClick}">
                         <td data-bind = "text: genre"></td>
                         <td data-bind = "text: title"></td>
                         <td><a href="#" data-bind="click: $root.removeTrack">Remove</a></td>
