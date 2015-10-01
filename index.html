@@ -8,170 +8,76 @@
 </head>
 <body>
 
-    <h1 class = "main_text" id = "header">Sail</h1>
+    <h1 class = "main_text" id = "header-text">Sail</h1>
+    <p class = "main_text" id = "intro-text">Choose a genre you want to explore and checkout a random track you might like.</p>
 
-    <p class = "main_text" id = "intro_text">Choose a genre you want to explore and checkout a random track you might like.</p>
+    <div class = "container" id = "body-wrapper">
+        <div class="row">
+            <div class="col-md-2 col-md-offset-5">
 
-    <div class="row">
-        <div class="col-md-2 col-md-offset-5">
+                <select id = "genres-select" data-bind = "event: {change: $root.showTableAndButton}">
+                    <option value = "Choose a Genre">Choose A Genre</option>
+                    <option value = "Synthpop">Synthpop</option>
+                    <option value = "Indie">Indie</option>
+                    <option value = "J-Pop">J-Pop</option>
+                    <option value = "Folk">Folk</option>
+                    <option value = "80's">80's</option>
+                    <option value = "Baroque">Baroque</option>
+                    <option value = "House">House</option>
+                    <option value = "Hip-Hop">Hip-Hop</option>
+                    <option value = "Rock">Rock</option>
+                    <option value = "Custom">Enter Your Own</option>
+                </select>
 
-            <select id = "GenresSelect">
-                <option value = "Choose a Genre">Choose A Genre</option>
-                <option value = "Indie">Indie</option>
-                <option value = "Electronic">Electronic</option>
-                <option value = "Hip-Hop">Hip-Hop</option>
-                <option value = "Pop">Pop</option>
-                <option value = "Folk">Folk</option>
-                <option value = "Dubstep">Dubstep</option>
-                <option value = "Jazz">Jazz</option>
-                <option value = "Classical">Classical</option>
-                <option value = "House">House</option>
-                <option value = "Synthpop">Synthpop</option>
-                <option value = "Rock">Rock</option>
-            </select>
+                <form id = "custom-genre-form" onsubmit="return false;">
+                    <p><input id = "custom-genre" type="text" name="custom-genre" placeholder = "Enter a Genre!"></p>
+                </form>
+            </div>
         </div>
-    </div>
 
-
-
-    <div class = "row">
-        <div class = "col-md-2"></div>
-        <div class = "col-md-8">
-            <table id = "TracksTable">
-                <thead id = "table_head">
+        <div class = "row">
+            <div class = "col-md-12">
+                <table id = "tracks-table">
+                    <thead id = "table_head">
                     <tr>
                         <th class = "table_sub_header">Genre</th>
                         <th class = "table_sub_header">Title</th>
                     </tr>
-                </thead>
+                    </thead>
 
-                <tbody data-bind = "foreach: resultsArray" id = "table_body">
+                    <tbody data-bind = "foreach: resultsArray" id = "table_body">
                     <tr class = "results_row" data-bind="event: {mouseover: $root.hoverRow, mouseout: $root.leaveRow, click: $root.selectRow, dblclick: $root.handleClick}">
                         <td data-bind = "text: genre"></td>
                         <td data-bind = "text: title"></td>
                         <td><a href="#" data-bind="click: $root.removeTrack">Remove</a></td>
-
-                        <!--<td><button id = "Play" data-bind = "click: $root.getSound, enable: $root.resultsArray().length > 0">Play</button></td>-->
-                        <!--<td><button id = "Pause" data-bind = "click: $root.pauseTrack, enable: $root.resultsArray().length > 0">Pause</button></td>-->
                     </tr>
-
-
-                </tbody>
-            </table>
+                    </tbody>
+                </table>
+            </div>
         </div>
-        <div class = "col-md-2"></div>
-    </div>
 
-    <div class="row">
-        <div class="col-md-2 col-md-offset-5">
-            <button id = "AddTrackButton" data-bind = "click: addTrack,  enable: resultsArray().length < 5">Add a Track!</button>
-            <h5>Total tracks: (<span data-bind = "text: resultsArray().length"></span>)</h5>
-        </div>
-    </div>
+        <div class = "row" id = "dashboard">
 
-    <div class = "row">
-
-        <div id = "dashboard" class = "col-md-12">
-            <div class = "col-md-2"></div>
-
-            <div class = "col-md-4">
-                <h1>Artwork Area</h1>
+            <div class = "col-md-12">
+                <h1>You are listening to <span id = "track-title"></span></h1>
                 <img id = "artwork_img" src = "">
-            </div>
-            <div class = "col-md-6">
-                <h1><span id = "track-title"></span></h1>
-                <p>This track has <span id = "track-likes"></span> likes.</p>
-                <p>And <span id = "track-comments"></span> comments</p>
-                <p>As well as <span id = "track-shares"></span> shares</p>
-                <p>Like it? Check it out on <a id = "track-link" href = "">SoundCloud</a></p>
-            </div>
 
-            <div class = "col-md-2"></div>
+                <p>This track has <span id = "track-likes"></span> likes.</p>
+                <p>As well as <span id = "track-comments"></span> comments.</p>
+                <p>And has been played <span id ="track-playbacks"></span> times.</p>
+                <p>Like it? Check it out on <a target="_blank" id = "track-link" href = "">SoundCloud!</a></p>
+
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12" id = "bottom-column">
+                <button id ="add-track-btn" data-bind = "click: addTrack,  enable: resultsArray().length < 5">Add a Track!</button>
+                <h5>Total tracks: (<span id = "array-length" data-bind = "text: resultsArray().length"></span>)</h5>
+            </div>
         </div>
     </div>
 
-    <!--<div class = "row">-->
-        <!--<div class = "col-md-6 col-md-offset-3">-->
-            <!--<p class = "main_text" id = "intro_text" data-bind="enable: resultsArray().length < 0">You are listening to: </p>-->
-        <!--</div>-->
-    <!--</div>-->
-
-    <!--<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="16px" height="16px" viewBox="0 0 16 16" version="1.1"-->
-
-         <!--id = "Play" data-bind = "click: $root.getSound, enable: $root.resultsArray().length > 0"-->
-            <!-->-->
-
-        <!--&lt;!&ndash; bar 1 &ndash;&gt;-->
-        <!--<path fill="#D8D8D8" d="M0,0 L6,0 L6,16 L0,16 L0,0 Z" id="bar1">-->
-            <!--<animate xlink:href="#bar1"-->
-                     <!--attributeName="d"-->
-                     <!--from="M0,0 L6,0 L6,16 L0,16 L0,0 Z"-->
-                     <!--to="M0,0 L6,3.20001221 L6,12.7999878 L0,16 L0,0 Z"-->
-                     <!--dur="0.3s"-->
-                     <!--fill="freeze"-->
-                     <!--begin="startAnimation.begin" />-->
-            <!--<animate xlink:href="#bar1"-->
-                     <!--attributeName="d"-->
-                     <!--from="M0,0 L6,3.20001221 L6,12.7999878 L0,16 L0,0 Z"-->
-                     <!--to="M0,0 L6,0 L6,16 L0,16 L0,0 Z"-->
-                     <!--dur="0.3s"-->
-                     <!--fill="freeze"-->
-                     <!--begin="reverseAnimation.begin" />-->
-        <!--</path>-->
-
-        <!--&lt;!&ndash; horizontal line &ndash;&gt;-->
-        <!--<path fill="#D8D8D8" d="M10,0 L16,0 L16,16 L10,16 Z" id="bar2">-->
-            <!--<animate attributeName="d"-->
-                     <!--from="M10,0 L16,0 L16,16 L10,16 Z"-->
-                     <!--to="M5.9944458,3.20001221 L15,8 L15,8 L5.9944458,12.7999878 Z"-->
-                     <!--dur="0.3s"-->
-                     <!--fill="freeze"-->
-                     <!--begin="startAnimation.begin" />-->
-            <!--<animate attributeName="d"-->
-                     <!--from="M5.9944458,3.20001221 L15,8 L15,8 L5.9944458,12.7999878 Z"-->
-                     <!--to="M10,0 L16,0 L16,16 L10,16 Z"-->
-                     <!--dur="0.3s"-->
-                     <!--fill="freeze"-->
-                     <!--begin="reverseAnimation.begin" />-->
-        <!--</path>-->
-
-        <!--&lt;!&ndash;  controls &ndash;&gt;-->
-        <!--&lt;!&ndash; these are on top of the visible icon. Their radius changes depending on which is active-->
-        <!--Opacity is set to 0 so you can't see them&ndash;&gt;-->
-        <!--<circle cx="16" cy="16" r="16" fill-opacity="0">-->
-            <!--<animate dur="0.01s" id="startAnimation" attributeName="r" values="16; 0" fill="freeze" begin="click" />-->
-            <!--<animate dur="0.01s" attributeName="r" values="0; 16" fill="freeze" begin="reverseAnimation.end" />-->
-        <!--</circle>-->
-        <!--<circle cx="16" cy="16" r="0" fill-opacity="0">-->
-            <!--<animate dur="0.001s" id="reverseAnimation" attributeName="r" values="16; 0" fill="freeze" begin="click" />-->
-            <!--<animate dur="0.001s" attributeName="r" values="0; 16" begin="startAnimation.end"  fill="freeze"  />-->
-        <!--</circle>-->
-    <!--</svg>-->
-
-    <!--<div class = "row">-->
-        <!--<div class = "col-md-12">-->
-            <!--<table class="table table-striped table-hover " id = "TracksTable">-->
-                <!--<thead id = "table_head">-->
-                <!--<tr>-->
-                    <!--<th class = "table_sub_header">Genre</th>-->
-                    <!--<th class = "table_sub_header">Title</th>-->
-                    <!--&lt;!&ndash;<th>Column heading</th>&ndash;&gt;-->
-                    <!--&lt;!&ndash;<th>Column heading</th>&ndash;&gt;-->
-                <!--</tr>-->
-                <!--</thead>-->
-                <!--<tbody data-bind = "foreach: resultsArray" id = "table_body">-->
-
-
-                <!--<tr class = "results_row" data-bind="event: {mouseover: $root.hoverRow, mouseout: $root.leaveRow, click: $root.selectRow, dblclick: $root.getSound}">-->
-                    <!--<td data-bind = "text: genre"></td>-->
-                    <!--<td data-bind = "text: title"></td>-->
-                    <!--<td><a href="#" data-bind="click: $root.removeTrack">Remove</a></td>-->
-                <!--</tr>-->
-
-                <!--</tbody>-->
-            <!--</table>-->
-        <!--</div>-->
-    <!--</div>-->
 
 
     <!---Import Bootstrap---->
@@ -183,6 +89,8 @@
     <script src = "http://connect.soundcloud.com/sdk.js"></script>
     <!---jQuery (local)--->
     <script src = "js/jquery-ui/jquery.js"></script>
+    <!------------------->
+    <link href = "css/animate.css" rel = "stylesheet">
     <!--roulette scrip (local)--->
     <script src = "js/Sail.js"></script>
 

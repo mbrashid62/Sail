@@ -4,73 +4,43 @@
 
 $(function(){
 
-    var $tracksTable = $('#TracksTable').hide();
-    var $addButton = $('#AddTrackButton').hide();
-    var $genreSelect = $('#GenresSelect');
-    var $play_pause_btn = $('#Play').hide();
-    var track_to_play;
-    var sound_being_played;
-    var is_track_playing = false;
+    var $dashboard = $('#dashboard').hide();
+    var $genreSelect = $('#genres-select');
+    var $customForm = $('#custom-genre-form').hide();
+    var $customInput = $('#custom-genre');
+    var $headerText = $('#header-text');
+    var $introText = $('#intro-text');
+    var $bodyWrapper = $('#body-wrapper');
 
-    var sc_track;
+    $introText.css("opacity", "0.0");
+    $bodyWrapper.css("opacity", "0.0");
+
+
+    var animateHeader = function(){
+        $headerText.addClass('animated bounceInUp');
+    };
+
+    var animateSubText = function(){
+        $introText.css("opacity", "1.0");
+        $introText.addClass('animated bounceInUp');
+    };
+
+    var animateBody = function () {
+        $bodyWrapper.css("opacity", "1.0");
+        $bodyWrapper.addClass('animated fadeIn');
+    };
+
+    animateHeader();
+
+    $headerText.on('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', animateSubText);
+    $introText.on('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', animateBody);
+
+
 
     /*****Get permission to use SoundCloud API*********/
     window.onload = function(){
         SC.initialize({
             client_id: '0daca8243d9f39939ef509e9124b7676'
-        });
-    };
-
-    $($genreSelect).on('change', function(e){
-        $tracksTable.show();
-        $addButton.show();
-    });
-
-    var getTrackInfo = function(track){
-
-        sc_track = track;
-        return {
-            "genre": track.genre,
-            "title": track.title,
-            "duration": track.duration,
-            "download_count": track.download_count,
-            "playback_count": track.playback_count,
-            "favoritings_count": track.favoritings_count,
-            "purchase_url": track.purchase_url,
-            "id": track.id
-        };
-    };
-
-    var addToResultsArray = function(this_track, results_array){
-
-        results_array.push(new TrackResult(this_track.genre, this_track.title, this_track.duration, this_track.download_count, this_track.playback_count, this_track.favoritings_count, this_track.purchase_url, this_track.id));
-    };
-
-    var handle_add_track = function(genreSelected, results_array){
-
-        //creates a promise
-        var track_promise = new Promise(function(resolve, reject) {
-
-            var this_track = null;
-            var has_received_track = false;
-
-            // perform an async request and then resolve/reject.
-            SC.get('/tracks', {genres: genreSelected, streamable: true},
-
-                //Get tracks arr from SC and then get a random track from arr
-                function (tracksArr) {
-                    var random = Math.floor(Math.random() * 9);
-                    this_track = getTrackInfo(tracksArr[random]);
-                    has_received_track = true;
-
-                    if (has_received_track) {
-                        resolve("Promise was resolved!");
-                        addToResultsArray(this_track, results_array);
-                    }
-                    else {
-                        reject(Error("Promise was rejected"));
-                    }
-                });
         });
     };
 
@@ -80,37 +50,121 @@ $(function(){
         var viewModel = this;
         this.resultsArray = ko.observableArray([]);
 
-        viewModel.addTrack = function () {
+        viewModel.isPlaying = false;
+        viewModel.currSound = null;
+        viewModel.trackPlaying = null;
+        viewModel.track_for_dash = null;
 
-            if($genreSelect.val() != 'Pick a Genre'){
-                var genreSelected = $genreSelect.val();
-                handle_add_track(genreSelected, viewModel.resultsArray);
+
+        viewModel.showTableAndButton = function(){
+
+            if($genreSelect.val() == 'Custom'){
+                $customForm.show();
+            }
+            else{
+                $customForm.hide();
+            }
+        },
+
+        viewModel.addTrack = function () {
+            var genreSelected = $genreSelect.val();
+            if($genreSelect.val() == 'Choose a Genre'){
+                alert('Pick an actual genre');
             }
 
-            else{alert('Pick an actual genre');}
+            else if($genreSelect.val() == 'Custom'){
+                viewModel.handle_add_track($customInput.val());
+            }
+
+            else{
+                viewModel.handle_add_track(genreSelected);
+            }
         },
+
+        viewModel.handle_add_track = function(genreSelected){
+
+            //creates a promise
+            var track_promise = new Promise(function(resolve, reject) {
+
+                var this_track = null;
+                var has_received_track = false;
+
+                // perform an async request and then resolve/reject.
+                SC.get('/tracks', {genres: genreSelected, streamable: true},
+
+                    //Get tracks arr from SC and then get a random track from arr
+                    function (tracksArr) {
+                        var random = Math.floor(Math.random() * 9);
+                        this_track = tracksArr[random];
+                        has_received_track = true;
+                        viewModel.track_for_dash = this_track;
+                        if (has_received_track) {
+                            resolve("Promise was resolved!");
+                            viewModel.addToResultsArray(this_track);
+                        }
+                        else {
+                            reject(Error("Promise was rejected"));
+                        }
+                    });
+            });
+        },
+
+        viewModel.addToResultsArray = function(this_track){
+            viewModel.resultsArray.push(this_track);
+            //viewModel.resultsArray.push(new TrackResult(this_track.genre, this_track.title, this_track.duration, this_track.download_count, this_track.playback_count, this_track.favoritings_count, this_track.purchase_url, this_track.id));
+        };
 
         viewModel.removeTrack = function (track){
             viewModel.resultsArray.remove(track);
         },
 
-        viewModel.handleClick = function(track){
-            viewModel.getSound(track);
-            viewModel.toggleDash();
+        viewModel.handleClick = function(trackClicked){
+
+            var index_clicked_track = viewModel.resultsArray.indexOf(trackClicked);
+            viewModel.track_for_dash  = viewModel.resultsArray()[index_clicked_track];
+
+
+            //if a track is playing and the user clicked that track- pause it
+            if(viewModel.isPlaying && (trackClicked == viewModel.trackPlaying)){
+                viewModel.currSound.pause();
+                viewModel.isPlaying = false;
+            }
+
+            //if a track is playing and the user clicked a different track other than the one playing - pause the one playing and play the one that the user clicked
+            else if(viewModel.isPlaying && (trackClicked != viewModel.trackPlaying)){
+
+                viewModel.currSound.pause();
+                viewModel.getSoundAndStream(trackClicked);
+            }
+
+            //if no track is playing - play the track that was clicked
+            else if(!viewModel.isPlaying){
+                viewModel.getSoundAndStream(trackClicked);
+            }
+
         },
 
-        viewModel.getSound = function(track){
-            debugger;
+        //gets sound from soundcloud, begins streaming sound, and assigns sound to viewModel.
+        viewModel.getSoundAndStream = function(trackClicked){
 
-            var track_path = '/tracks/' + track.id;
+            var track_path = '/tracks/' + trackClicked.id;
+
             var handleStreaming = function(viewModel){
-
                 console.log('Streaming is Ready');
+
                 try{
                         SC.stream(track_path, function(sound){
-                        sound_being_played = sound;
-                        viewModel.togglePause(sound);
-                        is_track_playing = true;
+                            //assign sound obj to viewmodel
+                            viewModel.currSound = sound;
+                            //play sound obj
+                            viewModel.currSound.play();
+                            //assign track being played to view model
+                            viewModel.trackPlaying = trackClicked;
+                            //notify viewmodel track is being played
+                            viewModel.isPlaying = true;
+                            //update dash
+                            viewModel.displayDash();
+
                     });
                 }
                 catch(e){
@@ -118,70 +172,47 @@ $(function(){
                 }
             };
 
-            if(is_track_playing == false){
-                SC.whenStreamingReady(handleStreaming(viewModel));
-            }
-            else{
-                sound_being_played.pause();
-                is_track_playing = false;
-            }
+            SC.whenStreamingReady(handleStreaming(viewModel));
 
         },
 
-        viewModel.togglePause = function (sound) {
-            console.log('In togglePause');
-            sound.togglePause();
-            //viewModel.displayDash(sc_track);
-        }
-
         viewModel.hoverRow = function(data, event){
             var el = $(event.target.parentElement);
-            el.css("backgroundColor", "gray");
-            el.css("color", "white");
-            el.css("cursor","pointer");
+            //el.css("backgroundColor", "gray");
+            //el.css("opacity", "1.0");
+            ////el.css("color", "white");
+            //el.css("cursor","pointer");
+            //el.css("color", "black");
 
         },
 
         viewModel.leaveRow = function(data, event){
             var el = $(event.target.parentElement);
-            el.css("backgroundColor", "");
+            //el.css("opacity", "0.4");
+            //el.css("color", "darkslategray");
         },
 
-        viewModel.toggleDash = function(){
+        viewModel.displayDash = function(){
 
-            //use sc track which is outer scope variable
-            debugger;
-
+            $dashboard.show();
             var art_img = $('#artwork_img');
-            art_img.attr("src", sc_track.artwork_url);
 
-            //rightside data
-            var title = $('#track-title').html(sc_track.title);
-            var likes = $('#track-likes').html(sc_track.likes_count);
-            var comments = $('#track-comments').html(sc_track.comment_count);
-            var link = $('#track-link').attr("href", sc_track.permalink_url);
+            if(viewModel.track_for_dash.artwork_url){
+                art_img.attr("src", viewModel.track_for_dash.artwork_url);
+            }
+
+            //track data
+            var title = $('#track-title').html(viewModel.track_for_dash.title);
+            var likes = $('#track-likes').html(viewModel.track_for_dash.likes_count);
+            var comments = $('#track-comments').html(viewModel.track_for_dash.comment_count);
+            var plays = $('#track-playbacks').html(viewModel.track_for_dash.playback_count);
+            var link = $('#track-link').attr("href", viewModel.track_for_dash.permalink_url);
 
         };
 
     };
 
     ko.applyBindings(new viewModel());
-
-    //class to represent a track result returned from soundcloud API
-    function TrackResult (genre, title, duration, download_count, playback_count, favoritings_count, purchase_url, id){
-
-        var self = this;
-        self.genre = genre;
-        self.title = title;
-        self.duration = duration;
-        self.download_count = download_count;
-        self.playback_count = playback_count;
-        self.favoritings_count = favoritings_count;
-        self.purchase_url = purchase_url;
-        self.id = id;
-
-    }
-
 });
 
 
