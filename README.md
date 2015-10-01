@@ -1,5 +1,5 @@
 # Sail
-A web application that sails through the SoundCloud ocean. Serves as a tool to help music-lovers browse different genres.
+A web application that sails through the SoundCloud ocean. This project serves as a tool to help music-lovers browse different genres.
 
 #Usage
 
