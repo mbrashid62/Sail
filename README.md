@@ -9,3 +9,5 @@ Add a track based off of a genre of your choice. You may add up to 5 tracks at o
 To play a track double-click on it. To pause, do the same thing.
 
 Feel free to report bugs to bill@clamsandcrabs.com
+
+[![Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy)
