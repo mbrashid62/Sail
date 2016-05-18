@@ -1,0 +1,12 @@
+{
+  "name": "Sail",
+  "description": "A music exploration tool using the soundcloud API",
+  "keywords": [ "Sail", "SoundCloud", "Widget" ],
+  "repository": "https://github.com/mbrashid62/Sail",
+  "website": "http://facebook.github.io/react/docs/tutorial.html",
+  "success_url": "/",
+  "env" : {
+    "BUILDPACK_URL": "https://github.com/heroku/heroku-buildpack-nodejs.git"
+  }
+}
+
