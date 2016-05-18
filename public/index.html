@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Sail</title>
+    <link rel = "stylesheet" href = "css/style.css">
+
+</head>
+<body>
+
+    <h1 class = "main_text" id = "header-text">Sail</h1>
+    <p class = "main_text" id = "intro-text">Choose a genre you want to explore and checkout a random track you might like.</p>
+
+    <div class = "container" id = "body-wrapper">
+        <div class="row">
+            <div class="col-md-2 col-md-offset-5">
+
+                <select id = "genres-select" data-bind = "event: {change: $root.showTableAndButton}">
+                    <option value = "Choose a Genre">Choose A Genre</option>
+                    <option value = "Synthpop">Synthpop</option>
+                    <option value = "Indie">Indie</option>
+                    <option value = "J-Pop">J-Pop</option>
+                    <option value = "Folk">Folk</option>
+                    <option value = "80's">80's</option>
+                    <option value = "Baroque">Baroque</option>
+                    <option value = "House">House</option>
+                    <option value = "Hip-Hop">Hip-Hop</option>
+                    <option value = "Rock">Rock</option>
+                    <option value = "Custom">Enter Your Own</option>
+                </select>
+
+                <form id = "custom-genre-form" onsubmit="return false;">
+                    <p><input id = "custom-genre" type="text" name="custom-genre" placeholder = "Enter a Genre!"></p>
+                </form>
+            </div>
+        </div>
+
+        <div class = "row">
+            <div class = "col-md-12">
+                <table id = "tracks-table">
+                    <thead id = "table_head">
+                    <tr>
+                        <th class = "table_sub_header">Genre</th>
+                        <th class = "table_sub_header">Title</th>
+                    </tr>
+                    </thead>
+
+                    <tbody data-bind = "foreach: resultsArray" id = "table_body">
+                    <tr class = "results_row" data-bind="event: {mouseover: $root.hoverRow, mouseout: $root.leaveRow, dblclick: $root.handleClick}">
+                        <td data-bind = "text: genre"></td>
+                        <td data-bind = "text: title"></td>
+                        <td><a href="#" data-bind="click: $root.removeTrack">Remove</a></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class = "row" id = "dashboard">
+
+            <div class = "col-md-12">
+                <h1>You are listening to <span id = "track-title"></span></h1>
+                <img id = "artwork_img" src = "">
+
+                <p>This track has <span id = "track-likes"></span> likes.</p>
+                <p>As well as <span id = "track-comments"></span> comments.</p>
+                <p>And has been played <span id ="track-playbacks"></span> times.</p>
+                <p>Like it? Check it out on <a target="_blank" id = "track-link" href = "">SoundCloud!</a></p>
+
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12" id = "bottom-column">
+                <button id ="add-track-btn" data-bind = "click: addTrack,  enable: resultsArray().length < 5">Add a Track!</button>
+                <h5>Total tracks: (<span id = "array-length" data-bind = "text: resultsArray().length"></span>)</h5>
+            </div>
+        </div>
+    </div>
+
+
+
+    <!---Import Bootstrap---->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet" integrity="sha256-MfvZlkHCEqatNoGiOXveE8FIwMzZg4W85qfrfIFBfYc= sha512-dTfge/zgoMYpP7QbHy4gWMEGsbsdZeCXz7irItjcC3sPUFtf0kuFbDz/ixG7ArTxmDjLXDmezHubeNikyKGVyQ==" crossorigin="anonymous">    <!--Import Knockout-->
+    <!----Import Knockout ---->
+    <script src = "https://cdnjs.cloudflare.com/ajax/libs/knockout/3.3.0/knockout-debug.js"></script>
+    <script src = "https://cdnjs.cloudflare.com/ajax/libs/knockout/3.3.0/knockout-min.js"></script>
+    <!---SoundCloud SDK--->
+    <script src="https://connect.soundcloud.com/sdk/sdk-3.0.0.js"></script>
+    <!---jQuery (local)--->
+    <script src = "js/jquery-ui/jquery.js"></script>
+    <!------------------->
+    <link href = "css/animate.css" rel = "stylesheet">
+    <!--roulette scrip (local)--->
+    <script src = "js/Sail.js"></script>
+
+</body>
+</html>
