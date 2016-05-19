@@ -9,6 +9,13 @@
 
 <body>
 
+    <script>
+        if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+            // some code..
+            window.location.href = 'mobile.html';
+
+        }
+    </script>
     <h1 class = "main_text" id = "header-text">Sail</h1>
     <p class = "main_text" id = "intro-text">Choose a genre you want to explore and checkout a random track you might like.</p>
 
@@ -16,7 +23,7 @@
         <div class="row">
             <div class="col-md-2 col-md-offset-5">
 
-                <select id = "genres-select" data-bind = "event: {change: $root.showTableAndButton}">
+                <select id = "genres-select" data-bind = "event: {change: $root.show_table_and_button}">
                     <option value = "Choose a Genre">Choose A Genre</option>
                     <option value = "Synthpop">Synthpop</option>
                     <option value = "Indie">Indie</option>
@@ -46,7 +53,7 @@
                     </tr>
                     </thead>
 
-                    <tbody data-bind = "foreach: resultsArray" id = "table_body">
+                    <tbody data-bind = "foreach: track_playlist" id = "table_body">
                     <tr class = "results_row" data-bind="event: {mouseover: $root.hoverRow, mouseout: $root.leaveRow, dblclick: $root.handleClick}">
                         <td data-bind = "text: genre"></td>
                         <td data-bind = "text: title"></td>
@@ -73,8 +80,8 @@
 
         <div class="row">
             <div class="col-md-12" id = "bottom-column">
-                <button id ="add-track-btn" data-bind = "click: addTrack,  enable: resultsArray().length < 10">Add a Track!</button>
-                <h5>Total tracks: (<span id = "array-length" data-bind = "text: resultsArray().length"></span>)</h5>
+                <button id ="add-track-btn" data-bind = "click: add_track,  enable: track_playlist().length < 20">Add a Track!</button>
+                <h5>Total tracks: (<span id = "array-length" data-bind = "text: track_playlist().length"></span>)</h5>
             </div>
         </div>
     </div>

@@ -45,17 +45,16 @@ $(function(){
     /******Knockout ViewModel*********/
     var viewModel = function () {
 
-        var viewModel = this;
-        //array to store tracks from SC
-        this.resultsArray = ko.observableArray([]);
+        var view_model = this;
+        this.track_playlist = ko.observableArray([]);    //array to store tracks from SC
 
-        viewModel.isPlaying = false;
-        viewModel.scPlayer = null;
-        viewModel.trackPlaying = null;
-        viewModel.track_for_dash = null;
+        view_model.is_playing = false;
+        view_model.sc_player = null;
+        view_model.track_playing = null;
+        view_model.track_for_dash = null;
 
 
-        viewModel.showTableAndButton = function(){
+        view_model.show_table_and_button = function(){
 
             if($genreSelect.val() == 'Custom')
                 $customForm.show();
@@ -63,163 +62,131 @@ $(function(){
                 $customForm.hide();
         },
 
-        viewModel.addTrack = function () {
-            var genreSelected = $genreSelect.val();
+        view_model.add_track = function () {
+            var genre_selected = $genreSelect.val();
             if($genreSelect.val() == 'Choose a Genre')
                 alert('Pick an actual genre');
 
             else if($genreSelect.val() == 'Custom')
-                viewModel.handle_add_track($customInput.val());
+                view_model.handle_add_track($customInput.val());
 
             else
-                viewModel.handle_add_track(genreSelected);
+                view_model.handle_add_track(genre_selected);
 
         },
 
-        viewModel.handle_add_track = function(genreSelected){
+        view_model.handle_add_track = function(genreSelected){
 
             var this_track = null;
             var has_received_track = false;
             SC.get('/tracks', {genres: genreSelected, streamable: true}).then(
 
-                function(tracksArr){
-                    debugger;
-                    var random = Math.floor(Math.random() * tracksArr.length);
-                    this_track = tracksArr[random];
+                function(tracks_response_array){
+                    //debugger;
+                    //console.log("Genre: " + genreSelected + " | " + "num_results: " + tracks_response_array.length);
+                    this_track = tracks_response_array[Math.floor(Math.random() * tracks_response_array.length)]; //select a random track from the array
                     has_received_track = true;
-                    viewModel.track_for_dash = this_track;
+                    view_model.track_for_dash = this_track;
                     if (has_received_track) {
                         console.log("Track has been fetched.");
-                        viewModel.addToResultsArray(this_track);
+                        view_model.addToResultsArray(this_track);
                     }
                     else {
                         console.log("Error in fetching track.");
                     }
+
+                    console.log("playlist: " + view_model.track_playlist);
+                    debugger;
                 }
 
             );
 
         },
 
-        viewModel.addToResultsArray = function(this_track){
-            viewModel.resultsArray.push(this_track);
+        view_model.addToResultsArray = function(this_track){
+            view_model.track_playlist.push(this_track);
         };
 
-        viewModel.removeTrack = function (track){
-            viewModel.resultsArray.remove(track);
+        view_model.removeTrack = function (track){
+            view_model.track_playlist.remove(track);
         },
 
-        viewModel.handleClick = function(trackClicked){
+        view_model.handleClick = function(trackClicked){
 
-            viewModel.track_for_dash  = trackClicked;
+            view_model.track_for_dash  = trackClicked;
 
             //if a track is playing and the user clicked that track- pause it
-            if(viewModel.isPlaying && (trackClicked == viewModel.trackPlaying)){
-                viewModel.scPlayer.pause();
-                viewModel.isPlaying = false;
+            if(view_model.is_playing && (trackClicked == view_model.track_playing)){
+                view_model.sc_player.pause();
+                view_model.is_playing = false;
             }
 
             //if a track is playing and the user clicked a different track other than the one playing - pause the one playing and play the one that the user clicked
-            else if(viewModel.isPlaying && (trackClicked != viewModel.trackPlaying)){
+            else if(view_model.is_playing && (trackClicked != view_model.track_playing)){
 
-                viewModel.scPlayer.pause();
-                viewModel.getSoundAndStream(trackClicked);
+                view_model.sc_player.pause();
+                view_model.getSoundAndStream(trackClicked);
             }
 
             //if no track is playing - play the track that was clicked
-            else if(!viewModel.isPlaying){
-                viewModel.getSoundAndStream(trackClicked);
+            else if(!view_model.is_playing){
+                view_model.getSoundAndStream(trackClicked);
             }
 
         },
 
-        //gets sound from soundcloud, begins streaming sound, and assigns sound to viewModel.
-        viewModel.getSoundAndStream = function(trackClicked){
+        //gets sound from soundcloud, begins streaming sound, and assigns sound to view_model.
+        view_model.getSoundAndStream = function(trackClicked){
 
             var track_path = '/tracks/' + trackClicked.id;
-
-            /*
-            SC.stream(, function(player){
-
-                debugger;
-                player. play();
-                debugger;
-            });*/
 
             SC.stream(track_path).then(function(player){
 
                 debugger;
                 //assign sound obj to viewmodel
-                viewModel.scPlayer = player;
+                view_model.sc_player = player;
                 //play sound obj
-                viewModel.scPlayer.play();
+                view_model.sc_player.play();
 
 
                 //assign track being played to view model
-                viewModel.trackPlaying = trackClicked;
+                view_model.track_playing = trackClicked;
                 //notify viewmodel track is being played
-                viewModel.isPlaying = true;
+                view_model.is_playing = true;
                 //update dash
-                viewModel.displayDash();
+                view_model.displayDash();
             });
-
-            /*
-            var handleStreaming = function(viewModel){
-                console.log('Streaming is Ready');
-
-                debugger;
-                try{
-                        SC.stream(track_path).then( function(sound){
-                            //assign sound obj to viewmodel
-                            viewModel.scPlayer = sound;
-                            //play sound obj
-                            viewModel.scPlayer.play();
-                            //assign track being played to view model
-                            viewModel.trackPlaying = trackClicked;
-                            //notify viewmodel track is being played
-                            viewModel.isPlaying = true;
-                            //update dash
-                            viewModel.displayDash();
-
-                    });
-                }
-                catch(e){
-                    console.log('Error in Streaming: ' + e);
-                }
-            };*/
-
-           // SC.whenStreamingReady(handleStreaming(viewModel));
 
         },
 
-        viewModel.displayDash = function(){
+        view_model.displayDash = function(){
 
             $dashboard.show();
             var art_img = $('#artwork_img');
 
-            if(viewModel.track_for_dash.artwork_url){
-                art_img.attr("src", viewModel.track_for_dash.artwork_url);
+            if(view_model.track_for_dash.artwork_url){
+                art_img.attr("src", view_model.track_for_dash.artwork_url);
             }
             else{
                 art_img.attr("src", '');
             }
 
             //track data
-            var title = $('#track-title').html(viewModel.track_for_dash.title);
-            var likes = $('#track-likes').html(viewModel.track_for_dash.likes_count);
-            var comments = $('#track-comments').html(viewModel.track_for_dash.comment_count);
-            var plays = $('#track-playbacks').html(viewModel.track_for_dash.playback_count);
-            var link = $('#track-link').attr("href", viewModel.track_for_dash.permalink_url);
+            var title = $('#track-title').html(view_model.track_for_dash.title);
+            var likes = $('#track-likes').html(view_model.track_for_dash.likes_count);
+            var comments = $('#track-comments').html(view_model.track_for_dash.comment_count);
+            var plays = $('#track-playbacks').html(view_model.track_for_dash.playback_count);
+            var link = $('#track-link').attr("href", view_model.track_for_dash.permalink_url);
 
         };
 
         //TODO fix
-        //viewModel.hoverRow = function(data, event){
+        //view_model.hoverRow = function(data, event){
         //    var el = $(event.target.parentElement);
         //    el.addClass('animated infinite pulse');
         //},
         //
-        //viewModel.leaveRow= function(data, event){
+        //view_model.leaveRow= function(data, event){
         //    var el = $(event.target.parentElement);
         //    el.removeClass('animated infinite pulse');
         //};
