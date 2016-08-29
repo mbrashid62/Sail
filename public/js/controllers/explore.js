@@ -18,6 +18,7 @@ soundcloudApp.controller("ExploreController", function ($scope, $window, Tracks,
         $scope.playingTrackPermalink = track.permalink_url;
         $scope.$apply();
     };
+
     $scope.initExplore = function () {
         var currentUser = firebase.auth().currentUser;
         if(currentUser == null ){

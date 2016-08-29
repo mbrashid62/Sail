@@ -11,10 +11,6 @@ soundcloudApp.config(['$routeProvider', function ($routeProvider) {
             templateUrl: 'views/register.html',
             controller: 'RegistrationController'
         })
-        .when('/success', {
-            templateUrl: 'views/success.html',
-            controller: 'SuccessController'
-        })
         .when('/explore', {
             templateUrl: 'views/explore.html',
             controller: 'ExploreController'

@@ -7,12 +7,12 @@ soundcloudApp.controller("RegistrationController", function ($scope, $window, Au
     $scope.login = function () {
         Authentication.login($scope.user);
     };
+
     $scope.register = function () {
         Authentication.register($scope.user);
     };
+
     $scope.navToExplore = function () {
         $window.location.href = '/#/explore';
     };
-
-
 });

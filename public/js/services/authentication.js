@@ -46,7 +46,6 @@ soundcloudApp.factory('Authentication', function ($rootScope, $window, Firebase,
         },
 
         register: function (user) {
-
             firebase.auth().createUserWithEmailAndPassword(user.email, user.password)
                 .then(function (registeredUser) {
 
@@ -67,7 +66,6 @@ soundcloudApp.factory('Authentication', function ($rootScope, $window, Firebase,
             });
         }
     }
-
 });
 
 
