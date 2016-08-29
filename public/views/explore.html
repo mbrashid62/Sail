@@ -1,0 +1,84 @@
+<header>
+    <nav class="cf">
+        <div class="branding"><a href="/#/">Sail</a></div>
+        <ul>
+            <li ng-click="logOut()"><a ng-href="#/">Sign Out</a></li>
+            <li><a ng-href="#/tracks">Tracks</a></li>
+            <li><a ng-href="#/explore">Explore</a></li>
+        </ul>
+    </nav>
+</header>
+
+<section class="card" ng-init="initExplore()">
+    <div class="textintro">
+        <h1>{{ welcomeMsg }}</h1>
+        <p class="message">Explore some tracks below. Double click to play one.</p>
+    </div>
+    <select id="genres-select"
+            ng-init="selectedGenre=listOfGenres[0]"
+            ng-options="genre for genre in listOfGenres"
+            ng-model="selectedGenre"
+            ng-change="selectedGenreChange()">
+    </select>
+
+    <button ng-click="fetchTrack()" class="btn">Find a Track</button>
+</section>
+
+<div class="container" ng-show="isPlaying">
+    <section class="card">
+        <div class="textintro">
+            <h1>{{ playingTrackTitle }}</h1>
+            <p class="message">Track Info</p>
+            <table class="dashTable">
+                <thead></thead>
+                <tbody>
+                    <tr>
+                        <td>Likes</td>
+                        <td><span class="trackStat">{{ playingTrackLikes }}</span> likes</td>
+                    </tr>
+                    <tr>
+                        <td>Comments </td>
+                        <td><span class="trackStat">{{ playingTrackComments }}</span> comments</td>
+                    </tr>
+                    <tr>
+                        <td>Plays </td>
+                        <td> <span class="trackStat">{{ playingTrackPlaybacks }}</span> plays</td>
+                    </tr>
+                    <tr>
+                        <td>Like it? </td>
+                        <td>Check it out on SC here, <a class="trackStat" href={{playingTrackPermalink}} target="_blank">here</a>!</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <button ng-click="pauseTrack()" ng-show="isPlaying" class="btn">I've heard enough</button>
+    </section>
+</div>
+
+<div class="container">
+    <section class="card" ng-hide="fetchedTracks.length == 0">
+            <table class="table table-hover">
+                <thead>
+                    <th>Genre</th>
+                    <th>Title</th>
+                </thead>
+                <tbody>
+                <tr ng-repeat="fetchedTrack in fetchedTracks"
+                    ng-dblclick="getPlayer($index)"
+                    style="cursor:pointer">
+                    <td>{{ fetchedTrack.genre}}</td>
+                    <td>
+                        <a ng-href="#">{{ fetchedTrack.title }}</a>
+                    </td>
+                    <td>
+                        <a ng-click="removeTrack($index)">Remove</a>
+                    </td>
+                    <td>
+                        <a ng-click="saveTrack($index)">Save</a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+    </section>
+</div>
+

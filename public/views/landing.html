@@ -1,0 +1,31 @@
+
+<section class="card login" ng-init="initLanding()">
+    <form name="loginform" novalidate
+          ng-submit="login()">
+
+        <div class="textintro">
+            <h1>Welcome to Sail</h1>
+            <p>Sign in Below</p>
+            <p class="message" ng-show="message">{{ message }}</p>
+        </div>
+
+        <fieldset>
+            <input type="email" name="email" placeholder="Email"
+                   ng-model="user.email" ng-required="true">
+            <p class="error validationerror"
+               ng-show="loginform.email.$invalid && loginform.email.$touched">You must enter a valid email</p>
+
+            <input type="password" name="password" placeholder="Password"
+                   ng-model="user.password" ng-required="true">
+            <p class="error validationerror"
+               ng-show="loginform.password.$invalid && loginform.password.$touched">Password is required</p>
+
+        </fieldset>
+
+        <button type="submit" class="btn"
+                ng-disabled="loginform.$invalid">Login</button>
+
+        <p>or <a ng-href="#/register">register</a></p>
+    </form>
+</section>
+
