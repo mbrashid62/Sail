@@ -1,6 +1,6 @@
 # Sail
 
-Sail is an online tool built for helping music-lovers browse different genres to explore sounds they like from SoundCloud.
+Sail is an online tool designed for helping music-lovers browse different genres and explore sounds from SoundCloud.
 This app follows an MVC pattern and stores data inside a NoSQL database.
 
 Sail is built with google products Angular and Firebase!
@@ -20,10 +20,10 @@ Tracks can be saved for future reference by clicking the Save link from the Expl
 
 #Tracks
 
-In the tracks view you are able to view all your saved tracks. You can store as many tracks you like here and you can remove them by clicking the delete link.
+From the Tracks view you are able to view all your saved tracks. You can store as many tracks you like here and you can remove them by clicking the delete link.
 
 #Other
 
-Please feel free to contact me at bill@clamsandcrabs.com if you have questions about Sail! Enjoy!
+Please feel free to contact me at bill@clamsandcrabs.com if you have questions about Sail. Enjoy!
 
 [![Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy)
