@@ -1,6 +1,6 @@
 soundcloudApp.controller("ExploreController", function ($scope, $window, Tracks, Authentication) {
 
-    $scope.listOfGenres = ['Rock', 'Synthpop', 'Indie', 'Jpop', 'Folk', '80\'s', 'Baroque', 'House', 'Hip-Hop'];
+    $scope.listOfGenres = ['80\'s', 'Rock', 'Synthpop', 'Indie', 'Jpop', 'Folk', 'Baroque', 'House', 'Hip-Hop'];
     $scope.fetchedTracks = [];
     $scope.isPlaying = false;
     $scope.playingTrackTitle = '';
@@ -29,9 +29,11 @@ soundcloudApp.controller("ExploreController", function ($scope, $window, Tracks,
     };
 
     $scope.fetchTrack = function () {
+
         Tracks.fetchTrack($scope.selectedGenre) // creates a promise
             .then(function (track) {
                 $scope.fetchedTracks.push(track);
+                $scope.$apply(); // lets angular know DOM needs to update after AJAX request
             });
     };
 
@@ -45,7 +47,11 @@ soundcloudApp.controller("ExploreController", function ($scope, $window, Tracks,
             .then(function (player) {
                 debugger;
                 $scope.player = player;
-                $scope.player.play();
+                // $scope.player.initAudio.then(function (something) {
+                //     debugger;
+                //     something.play();
+                // });
+                // $scope.player.play();
                 $scope.isPlaying = true;
                 $scope.isDash = true;
                 updateDashBoard(trackToToggle);
@@ -53,6 +59,7 @@ soundcloudApp.controller("ExploreController", function ($scope, $window, Tracks,
     };
 
     $scope.pauseTrack = function () {
+        debugger;
         $scope.player.pause();
         $scope.isPlaying = false;
     };

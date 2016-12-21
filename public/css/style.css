@@ -661,3 +661,7 @@ input.ng-valid.ng-touched {
 .trackStat {
   color: #2D8BCF;
 }
+
+.fetched-track-title{
+  color: #2D8BCF;
+}
