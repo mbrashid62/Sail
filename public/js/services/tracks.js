@@ -3,7 +3,7 @@ soundcloudApp.factory('Tracks', function () {
     return {
         fetchTrack: function (genreSelected) {
             return new Promise (function (resolve, reject) {
-                SC.get('/tracks', { genres: genreSelected, streamable: true }) // sc api request
+                SC.get('/tracks', { genres: genreSelected }) // sc api request
                     .then(function (tracks) {
                         resolve(tracks[Math.floor(Math.random() * tracks.length)]); // pick a random track
                     });
@@ -11,7 +11,6 @@ soundcloudApp.factory('Tracks', function () {
         },
 
         getPlayer: function (track) {
-            debugger;
             var trackPath = '/tracks/' + track.id;
             return new Promise(function (resolve, reject) {
                 SC.stream(trackPath)
