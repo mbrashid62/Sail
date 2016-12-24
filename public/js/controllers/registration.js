@@ -1,9 +1,8 @@
 soundcloudApp.controller("RegistrationController", function ($scope, $window, Authentication) {
 
     $scope.initLanding = function () {
-        Authentication.isUserLoggedIn();
+        Authentication.initLanding();
     };
-
     $scope.login = function () {
         Authentication.login($scope.user);
     };
