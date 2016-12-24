@@ -7,7 +7,6 @@ soundcloudApp.factory('Authentication', function ($rootScope, $window, Firebase,
             if ($window.location.hash == '#/tracks') { // if user is refreshing from tracks view
                 $window.location.href = '/#/tracks';
             } else {
-                debugger;
                 $window.location.href = '/#/explore';
             }
         } else {
