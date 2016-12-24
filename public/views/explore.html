@@ -13,6 +13,7 @@
     <div class="textintro">
         <h1>{{ welcomeMsg }}</h1>
         <p class="message">Explore some tracks below. Double click to play one.</p>
+        <p class="message">{{ errorMessage }}</p>
     </div>
     <select id="genres-select"
             ng-init="selectedGenre=listOfGenres[0]"

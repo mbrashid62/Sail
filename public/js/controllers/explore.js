@@ -1,7 +1,7 @@
 soundcloudApp.controller("ExploreController", function ($scope, $window, Tracks, Authentication) {
 
     $scope.listOfGenres = ['80\'s', 'Rock', 'Synthpop', 'Indie', 'Jpop', 'Folk', 'Baroque', 'House', 'Hip-Hop'];
-    $scope.fetchedTracks = [];
+    $scope.fetchedTracks = Tracks.getFetchedTracks();
     $scope.isPlaying = false;
     $scope.playingTrackTitle = '';
     $scope.playingTrackLikes = null;
@@ -31,15 +31,14 @@ soundcloudApp.controller("ExploreController", function ($scope, $window, Tracks,
     $scope.fetchTrack = function () {
 
         Tracks.fetchTrack($scope.selectedGenre) // creates a promise
-            .then(function (track) {
-                if(isTrackFetched(track)) { // if track is already fetched repeat call
-                    $scope.fetchTrack();
-                } else { // else add track to fetchedTracks array
-                    $scope.fetchedTracks.push(track);
-                }
-
+            .then(function (trackAdded) {
+                $scope.fetchedTracks = Tracks.getFetchedTracks();
+                $scope.errorMessage = '';
                 $scope.$apply(); // lets angular know DOM needs to update after AJAX request
-            });
+            }).catch(function (errorMsg) {
+                $scope.errorMessage = errorMsg;
+                $scope.$apply();
+        });
     };
 
     $scope.removeTrack = function (index) {
@@ -73,13 +72,5 @@ soundcloudApp.controller("ExploreController", function ($scope, $window, Tracks,
 
     $scope.logOut = function () {
       Authentication.logout();
-    };
-
-    var isTrackFetched = function (track) {
-        for(var i=0; i<$scope.fetchedTracks.length; i++) {
-            if(angular.equals($scope.fetchedTracks[i], track)) {
-                return true;
-            }
-        }
     };
 });

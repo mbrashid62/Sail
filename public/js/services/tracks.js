@@ -1,13 +1,43 @@
 soundcloudApp.factory('Tracks', function () {
 
+    var fetchedTracks = [];
+
+    var isAlreadyFetched = function (track) {
+        for(var i=0; i<fetchedTracks.length; i++) {
+            if(angular.equals(fetchedTracks[i], track)) {
+                return true;
+            }
+        }
+    };
+    var isEnoughRoom = function () { // doesn't let users add more than 10 tracks at once to the explorer view
+        return fetchedTracks.length < 10;
+    };
+
     return {
+
         fetchTrack: function (genreSelected) {
+
+
             return new Promise (function (resolve, reject) {
                 SC.get('/tracks', { genres: genreSelected }) // sc api request
                     .then(function (tracks) {
-                        resolve(tracks[Math.floor(Math.random() * tracks.length)]); // pick a random track
+                        var randTrack = tracks[Math.floor(Math.random() * tracks.length)];
+                        if(isAlreadyFetched(randTrack)) { // helps ensure new track is unique for user
+                            fetchTrack(genreSelected);
+                        } else if (!isEnoughRoom()){
+                            reject('You can only explore 10 tracks at once. Please remove some to continue exploring.');
+
+                        } else {
+                            fetchedTracks.push(randTrack);
+                            resolve(randTrack);
+                        }
                     });
             });
+
+        },
+
+        getFetchedTracks: function () {
+          return fetchedTracks;
         },
 
         getPlayer: function (track) {
@@ -40,8 +70,8 @@ soundcloudApp.factory('Tracks', function () {
             var updates = {};
             updates['/tracks/' + userId + '/' + newTrackKey] = dataToSave;
             db.ref().update(updates);
-            alert('You just saved ' + track.title + '!' +' You may now visit Your Tracks to view it at any time.');
-            console.log('Just saved: ' + track.title + ' to the database.');
+            alert('You just saved ' + track.title + '!' +' You may now visit the Tracks page to view it at any time.');
+            console.log('You just saved: ' + track.title + ' to the database.');
         },
 
         fetchSavedTracks: function () {
