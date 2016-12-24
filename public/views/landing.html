@@ -5,10 +5,12 @@
 
         <div class="textintro">
             <h1>Welcome to Sail</h1>
-            <p>Sign in Below</p>
-            <p class="message" ng-show="message">{{ message }}</p>
+            <p class="message">Sign in Below</p>
+            <p class="message">{{ errorMessage }}</p>
         </div>
 
+
+        <p>{{ errorCode }}</p>
         <fieldset>
             <input type="email" name="email" placeholder="Email"
                    ng-model="user.email" ng-required="true">
@@ -19,7 +21,6 @@
                    ng-model="user.password" ng-required="true">
             <p class="error validationerror"
                ng-show="loginform.password.$invalid && loginform.password.$touched">Password is required</p>
-
         </fieldset>
 
         <button type="submit" class="btn"

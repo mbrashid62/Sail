@@ -1,11 +1,11 @@
-<section class="card register">
+<section class="card register" ng-init="initLanding()">
     <form name="registerform" novalidate
         ng-submit="register()">
 
         <div class="textintro">
             <h1>Register</h1>
-            <p>To access site features</p>
-            <p class="message" ng-show="message">{{ message}}</p>
+            <p class="message">To use Sail</p>
+            <p class="message" ng-show="registrationErrorMessage">{{ registrationErrorMessage }}</p>
         </div>
 
         <fieldset>
