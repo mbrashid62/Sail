@@ -16,6 +16,19 @@
         <p class="message">Click delete to remove a track from your saved list.</p>
     </div>
 </section>
+
+<div class="container" ng-show="isDashShown">
+    <section class="card">
+        <div class="textintro">
+            <h1>{{ playingTrackTitle }}</h1>
+            <hr>
+        </div>
+        <div>
+            <iframe id="sc-widget" width="100%" scrolling="no" frameborder="no"></iframe>
+        </div>
+    </section>
+</div>
+
 <div class="container">
     <section class="card">
         <table class="table table-hover">
@@ -25,11 +38,10 @@
             </thead>
             <tbody>
             <tr ng-repeat="savedTrack in savedTracks"
+                ng-dblclick="showPlayer($index)"
                 style="cursor:pointer">
-                <td> {{ savedTrack.trackTitle }} </td>
-                <td>
-                    <a> {{ savedTrack.trackGenre }} </a>
-                </td>
+                <td> {{ savedTrack.title }} </td>
+                <td> {{ savedTrack.genre }} </td>
                 <td>
                     <a ng-click="deleteSavedTrack($index)">Delete</a>
                 </td>
