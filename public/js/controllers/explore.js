@@ -1,21 +1,14 @@
 soundcloudApp.controller("ExploreController", function ($scope, $window, Tracks, Authentication) {
 
-    $scope.listOfGenres = ['80\'s', 'Rock', 'Synthpop', 'Indie', 'Jpop', 'Folk', 'Baroque', 'House', 'Hip-Hop'];
+    $scope.listOfGenres = ['80\'s', 'Rock', 'SynthPop', 'Indie', 'Jpop', 'Folk', 'Baroque', 'House', 'Soul', 'Hip-Hop', 'Electronic', 'Country', 'Classical', 'RnB', 'Pop'];
     $scope.fetchedTracks = Tracks.getFetchedTracks();
     $scope.isPlaying = false;
     $scope.playingTrackTitle = '';
-    $scope.playingTrackLikes = null;
-    $scope.playingTrackPlaybacks = null;
-    $scope.playingTrackComments = null;
-    $scope.playingTrackPermalink = null;
-    $scope.player = {};
+    $scope.isDashShown = false;
+
 
     var updateDashBoard = function (track) {
         $scope.playingTrackTitle = track.title;
-        $scope.playingTrackLikes = track.likes_count;
-        $scope.playingTrackPlaybacks = track.playback_count;
-        $scope.playingTrackComments = track.comment_count;
-        $scope.playingTrackPermalink = track.permalink_url;
         $scope.$apply();
     };
 
@@ -45,25 +38,12 @@ soundcloudApp.controller("ExploreController", function ($scope, $window, Tracks,
         $scope.fetchedTracks.splice(index, 1);
     };
 
-    $scope.getPlayer = function (index) {
-        var trackToToggle = $scope.fetchedTracks[index];
-        Tracks.getPlayer(trackToToggle)
-            .then(function (player) {
-                $scope.player = player;
-                // $scope.player.initAudio.then(function (something) {
-                //     debugger;
-                //     something.play();
-                // });
-                // $scope.player.play();
-                $scope.isPlaying = true;
-                $scope.isDash = true;
-                updateDashBoard(trackToToggle);
-            });
-    };
-
-    $scope.pauseTrack = function () {
-        $scope.player.pause();
-        $scope.isPlaying = false;
+    $scope.showPlayer = function (index) {
+        var trackSelected = $scope.fetchedTracks[index];
+        Tracks.showPlayer(trackSelected);
+        // $scope.isPlaying = true; // todo: can come in handy later for animations
+        $scope.isDashShown = true;
+        updateDashBoard(trackSelected);
     };
 
     $scope.saveTrack = function (index) {

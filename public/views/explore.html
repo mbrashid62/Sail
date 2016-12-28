@@ -24,47 +24,28 @@
     <button ng-click="fetchTrack()" class="btn">Find a Track</button>
 </section>
 
-<div class="container" ng-show="isPlaying">
+<div class="container" ng-show="isDashShown">
     <section class="card">
         <div class="textintro">
             <h1>{{ playingTrackTitle }}</h1>
-            <p class="message">Track Info</p>
-            <table class="dashTable">
-                <thead></thead>
-                <tbody>
-                    <tr>
-                        <td>Likes</td>
-                        <td><span class="trackStat">{{ playingTrackLikes }}</span> likes</td>
-                    </tr>
-                    <tr>
-                        <td>Comments </td>
-                        <td><span class="trackStat">{{ playingTrackComments }}</span> comments</td>
-                    </tr>
-                    <tr>
-                        <td>Plays </td>
-                        <td> <span class="trackStat">{{ playingTrackPlaybacks }}</span> plays</td>
-                    </tr>
-                    <tr>
-                        <td>Like it? </td>
-                        <td>Check it out on SC here, <a class="trackStat" href={{playingTrackPermalink}} target="_blank">here</a>!</td>
-                    </tr>
-                </tbody>
-            </table>
+            <hr>
         </div>
-        <button ng-click="pauseTrack()" ng-show="isPlaying" class="btn">I've heard enough</button>
+        <div>
+            <iframe id="sc-widget" width="100%" scrolling="no" frameborder="no"></iframe>
+        </div>
     </section>
 </div>
 
 <div class="container">
     <section class="card" ng-hide="fetchedTracks.length == 0">
-            <table class="table table-hover">
+        <table class="table table-hover">
                 <thead>
                     <th>Genre</th>
                     <th>Title</th>
                 </thead>
                 <tbody>
                 <tr ng-repeat="fetchedTrack in fetchedTracks"
-                    ng-dblclick="getPlayer($index)"
+                    ng-dblclick="showPlayer($index)"
                     style="cursor:pointer">
                     <td>{{ fetchedTrack.genre}}</td>
                     <td>
@@ -81,4 +62,5 @@
             </table>
     </section>
 </div>
+
 

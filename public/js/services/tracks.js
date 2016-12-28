@@ -40,16 +40,25 @@ soundcloudApp.factory('Tracks', function () {
           return fetchedTracks;
         },
 
-        getPlayer: function (track) {
-            var trackPath = '/tracks/' + track.id;
-            return new Promise(function (resolve, reject) {
-                SC.stream(trackPath)
-                    .then(function(player) {
-                        resolve(player); // player.play();
-                    })
-                    .catch(function (err) {
-                        reject(err);
+        showPlayer: function (trackSelected) {
+            var widgetIframe = document.getElementById('sc-widget');
+            var uri = trackSelected.uri;
+            var widgetURL = 'https://w.soundcloud.com/player/?url=' + uri;
+            widgetIframe.setAttribute('src', widgetURL);
+
+            var widget = SC.Widget(widgetIframe);
+
+            widget.bind(SC.Widget.Events.READY, function() {
+                widget.bind(SC.Widget.Events.PLAY, function() {
+                    widget.getCurrentSound(function(currentSound) { // get information about currently playing sound
+                        console.log('sound ' + currentSound.get('title') + 'began to play');
                     });
+                });
+                widget.getVolume(function(volume) { // get current level of volume
+                    console.log('' + volume);
+                });
+
+                widget.setVolume(50); // set new volume level
             });
         },
 
@@ -57,18 +66,19 @@ soundcloudApp.factory('Tracks', function () {
             var userId = firebase.auth().currentUser.uid;
             var db = firebase.database();
             var newTrackKey = db.ref().child('tracks').push().key;
-            var dataToSave = {
-                trackTitle: track.title,
-                trackGenre: track.genre,
-                trackArt: track.artwork_url,
-                trackLikes:track.likes_count,
-                trackComments: track.comment_count,
-                trackPlays: track.playback_count,
-                trackLink: track.permalink_url,
-                trackId: newTrackKey
+            var trackDataToSave = {
+                title: track.title,
+                genre: track.genre,
+                artwork_url: track.artwork_url,
+                likes_count: track.likes_count,
+                comment_count: track.comment_count,
+                playback_count: track.playback_count,
+                permalink_url: track.permalink_url,
+                trackId: newTrackKey,
+                uri: track.uri
             };
             var updates = {};
-            updates['/tracks/' + userId + '/' + newTrackKey] = dataToSave;
+            updates['/tracks/' + userId + '/' + newTrackKey] = trackDataToSave;
             db.ref().update(updates);
             alert('You just saved ' + track.title + '!' +' You may now visit the Tracks page to view it at any time.');
             console.log('You just saved: ' + track.title + ' to the database.');
