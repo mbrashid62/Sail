@@ -26,4 +26,3 @@ From the Tracks view you are able to view all your saved tracks. You can store a
 
 Please feel free to contact me at bill@clamsandcrabs.com if you have questions about Sail. Enjoy!
 
-[![Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy)
