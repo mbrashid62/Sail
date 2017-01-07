@@ -131,8 +131,8 @@ h1{
   margin-bottom: 10px;
   padding-top: 10px;
   font-weight: 700;
-    font-family: Lato,appleLogo,sans-serif;
-    margin: 0 0 1rem;
+  margin: 0 0 1rem;
+  font-family: Lato,appleLogo,sans-serif;
 }
 
 h2{
@@ -462,40 +462,36 @@ nav {
 }
 
 
-nav ul {
-  width: 60%;
-  float: right;
-}
 
-nav ul li {
-  float: right;
-  color: #145266;
-  font-family: Lato, 'Helvetica Nueue', Helvetica, Arial, sans-serif;
-  margin: 10px 0;
-  font-size: 1.1em;
-}
+/*nav ul li {*/
+  /*float: right;*/
+  /*color: #145266;*/
+  /*font-family: Lato, 'Helvetica Nueue', Helvetica, Arial, sans-serif;*/
+  /*margin: 10px 0;*/
+  /*font-size: 1.1em;*/
+/*}*/
 
-nav ul li.user {
-  background-color: #D24244;
-  color: #EFC94C;
-  font-family: Lato, 'Helvetica Nueue', Helvetica, Arial, sans-serif;
-}
+/*nav ul li.user {*/
+  /*background-color: #D24244;*/
+  /*color: #EFC94C;*/
+  /*font-family: Lato, 'Helvetica Nueue', Helvetica, Arial, sans-serif;*/
+/*}*/
 
-nav ul li.user.hello {
-  margin-left: 60px;
-  padding: 10px 15px;
-}
+/*nav ul li.user.hello {*/
+  /*margin-left: 60px;*/
+  /*padding: 10px 15px;*/
+/*}*/
 
-nav ul li a {
-  float: left;
-  text-decoration: none;
-  padding: 10px 15px;
-  border-radius: 4px;
-}
+/*nav ul li a {*/
+  /*float: left;*/
+  /*text-decoration: none;*/
+  /*padding: 10px 15px;*/
+  /*border-radius: 4px;*/
+/*}*/
 
-nav li a:hover {
-  color: #E76C5A;
-}
+/*nav li a:hover {*/
+  /*color: #E76C5A;*/
+/*}*/
 
 .userinfo {
   text-align: center;
@@ -636,9 +632,8 @@ input.ng-valid.ng-touched {
 
 /**My Styling for Sail**/
 #genres-select {
-  margin-top: 40px;
-  margin-right:40px;
-  width: 30%;
+  margin-top: 10px;
+  width: 20%;
   height: 40px;
   background: no-repeat right #ddd;
   border: 1px solid #ccc;
@@ -665,3 +660,41 @@ input.ng-valid.ng-touched {
 .fetched-track-title{
   color: #2D8BCF;
 }
+.find-track-btn{
+  margin-top:15px;
+  font-size: 1.25rem;
+}
+.menulist{
+  float: right !important;
+  padding-top: 15px;
+  font-size: 20px;
+}
+
+.login-fields input{
+  height: 100%;
+  font-size: 20px;
+  padding: 10px
+}
+
+@media (max-width:700px) { /*collapses menu items on page resize*/
+  .menulist li {
+    float: left;
+    clear: left;
+  }
+  h1 {
+    font-size: 25px;
+  }
+  .btn {
+    font-size: 0.75rem;
+  }
+  .card {
+    width: 60%;
+  }
+  .card table {
+    width: inherit;
+  }
+  .card table *{
+    font-size: 15px;
+  }
+}
+
