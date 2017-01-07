@@ -1,15 +1,4 @@
-
-<header ng-init="">
-    <nav class="cf">
-        <div class="branding"><a href="/#/">Sail</a></div>
-        <ul>
-            <li ng-click="logOut()"><a ng-href="#/">Sign Out</a></li>
-            <li><a ng-href="#/tracks">Tracks</a></li>
-            <li><a ng-href="#/explore">Explore</a></li>
-        </ul>
-    </nav>
-</header>
-
+<ng-include src="'views/partials/nav.html'"></ng-include>
 <section class="card" ng-init="initTracks()">
     <div class="textintro">
         <h1>{{ welcomeMsg }}</h1>
@@ -29,14 +18,13 @@
     </section>
 </div>
 
-<div class="container">
-    <section class="card">
-        <table class="table table-hover">
-            <thead>
+<section class="card">
+    <table class="table table-hover">
+        <thead>
             <th>Genre</th>
             <th>Title</th>
-            </thead>
-            <tbody>
+        </thead>
+        <tbody>
             <tr ng-repeat="savedTrack in savedTracks"
                 ng-dblclick="showPlayer($index)"
                 style="cursor:pointer">
@@ -46,7 +34,6 @@
                     <a ng-click="deleteSavedTrack($index)">Delete</a>
                 </td>
             </tr>
-            </tbody>
-        </table>
-    </section>
-</div>
+        </tbody>
+    </table>
+</section>

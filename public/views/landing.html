@@ -1,4 +1,3 @@
-
 <section class="card login" ng-init="initLanding()">
     <form name="loginform" novalidate
           ng-submit="login()">
@@ -11,7 +10,7 @@
 
 
         <p>{{ errorCode }}</p>
-        <fieldset>
+        <fieldset class="login-fields">
             <input type="email" name="email" placeholder="Email"
                    ng-model="user.email" ng-required="true">
             <p class="error validationerror"

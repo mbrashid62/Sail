@@ -9,15 +9,13 @@ soundcloudApp.factory('Tracks', function () {
             }
         }
     };
-    var isEnoughRoom = function () { // doesn't let users add more than 10 tracks at once to the explorer view
+    var isEnoughRoom = function () { // don't let users add more than 10 tracks at once to the explorer view
         return fetchedTracks.length < 10;
     };
 
     return {
 
         fetchTrack: function (genreSelected) {
-
-
             return new Promise (function (resolve, reject) {
                 SC.get('/tracks', { genres: genreSelected }) // sc api request
                     .then(function (tracks) {
